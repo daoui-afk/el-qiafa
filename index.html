@@ -470,7 +470,7 @@ function openAdm(){
 }
 function gateView(){
   const first=!S.cfg.ph,k="onkeydown=\"if(event.key==='Enter')gateGo()\"";
-  $('adm').innerHTML=`<div class="pan"><div class="row"><h3 style="margin:0">${first?'تعيين كلمة مرور للوحة التحكم':'لوحة التحكم'}</h3><button onclick="closeAdm()">إغلاق</button></div><div class="vf" style="max-width:360px;margin-top:10px"><label>${first?'كلمة المرور الجديدة (6 أحرف على الأقل)':'كلمة المرور'}</label><input id="pw1" type="password" autocomplete="${first?'new-password':'current-password'}" ${k}>${first?`<label>تأكيد كلمة المرور</label><input id="pw2" type="password" autocomplete="new-password" ${k}>`:''}<div id="pwe" class="note" style="color:#a4161a;min-height:1.3em"></div><button class="btn" onclick="gateGo()">${first?'حفظ ومتابعة':'دخول'}</button>${first?'<p class="note">بعد تعيينها اضغط «حفظ وتنزيل ملف المتجر» من تبويب «التوصيل والإعدادات» ثم ارفع الملف على Netlify حتى تُطبَّق على الموقع.</p>':''}</div></div>`;
+  $('adm').innerHTML=`<div class="pan"><div class="row"><h3 style="margin:0">${first?'تعيين كلمة مرور للوحة التحكم':'لوحة التحكم'}</h3><button onclick="closeAdm()">إغلاق</button></div><div class="vf" style="max-width:360px;margin-top:10px"><label>${first?'كلمة المرور الجديدة (6 أحرف على الأقل)':'كلمة المرور'}</label><input id="pw1" type="password" autocomplete="${first?'new-password':'current-password'}" ${k}>${first?`<label>تأكيد كلمة المرور</label><input id="pw2" type="password" autocomplete="new-password" ${k}>`:''}<div id="pwe" class="note" style="color:#a4161a;min-height:1.3em"></div><button class="btn" onclick="gateGo()">${first?'حفظ ومتابعة':'دخول'}</button>${first?'<p class="note">بعد تعيينها اضغط «حفظ ونشر التغييرات» من تبويب «التوصيل والإعدادات» ثم ارفع الملف على Netlify حتى تُطبَّق على الموقع.</p>':''}</div></div>`;
   setTimeout(()=>{const e=$('pw1');if(e)e.focus()},60);
 }
 function gateGo(){
@@ -487,7 +487,7 @@ function chgPw(){
   const v=$('npw').value;
   if(v.length<6){alert('كلمة المرور قصيرة (6 أحرف على الأقل)');return}
   S.cfg.ph=pwH(v);$('npw').value='';
-  alert('تم تغيير كلمة المرور. اضغط «حفظ وتنزيل ملف المتجر» وارفع الملف ليُطبَّق التغيير على الموقع.');
+  alert('تم تغيير كلمة المرور. اضغط «حفظ ونشر التغييرات» وارفع الملف ليُطبَّق التغيير على الموقع.');
 }
 function closeAdm(){$('adm').classList.remove('on');if(unsub){unsub();unsub=null}render()}
 const CS=sel=>CATS.map(([c,id,n])=>`<option value="${c}" ${sel===c?'selected':''}>${n}</option>`).join('');
@@ -549,11 +549,11 @@ function edCard(i){const p=S.products[i],k=String(i);
   return `<div class="ap vf">${edImg(k)}${edFields(k)}${isIh(p)?'':offAdm(i)}<div class="row"><label style="margin:0"><input type="checkbox" style="width:auto" ${p.on!==false?'checked':''} onchange="S.products[${i}].on=this.checked"> معروض</label><span><button onclick="copyL(${i})">نسخ الرابط</button> <button onclick="if(confirm('حذف المنتج؟')){S.products.splice(${i},1);admP()}">حذف</button></span></div></div>`}
 function admP(){
   const L=S.products.map((p,i)=>[p,i]).filter(([p])=>AF==='all'||p.cat===AF);
-  $('tb').innerHTML=`<div class="vf"><select onchange="AF=this.value;admP()"><option value="all">كل الأقسام (${S.products.length})</option>${CATS.map(([c,id,n])=>`<option value="${c}" ${AF===c?'selected':''}>${n} (${S.products.filter(p=>p.cat===c).length})</option>`).join('')}</select><button class="btn" onclick="tab='a';admView()">+ إضافة منتج جديد</button><button class="btn s" onclick="save()">حفظ وتنزيل ملف المتجر</button></div><div style="margin-top:12px">`+(L.map(([p,i])=>edCard(i)).join('')||'<p class="note">لا توجد منتجات في هذا القسم.</p>')+`</div>`;
+  $('tb').innerHTML=`<div class="vf"><select onchange="AF=this.value;admP()"><option value="all">كل الأقسام (${S.products.length})</option>${CATS.map(([c,id,n])=>`<option value="${c}" ${AF===c?'selected':''}>${n} (${S.products.filter(p=>p.cat===c).length})</option>`).join('')}</select><button class="btn" onclick="tab='a';admView()">+ إضافة منتج جديد</button><button class="btn s" onclick="save()">حفظ ونشر التغييرات</button></div><div style="margin-top:12px">`+(L.map(([p,i])=>edCard(i)).join('')||'<p class="note">لا توجد منتجات في هذا القسم.</p>')+`</div>`;
 }
 function admA(){
   const msg=ADDED;ADDED='';
-  $('tb').innerHTML=`<div class="vf">${msg?`<div class="oc" style="background:#e6f4e7;margin:0">✓ تمت إضافة «${esc(msg)}» إلى المتجر. اضغط «حفظ وتنزيل ملف المتجر» ليظهر للزبائن.</div>`:''}<h4 style="margin:6px 0 0">إضافة منتج جديد</h4>${edImg('d')}${edFields('d')}<button class="btn" style="margin-top:12px" onclick="addNew()">إضافة المنتج إلى المتجر</button><button class="btn s" onclick="save()">حفظ وتنزيل ملف المتجر</button></div>`;
+  $('tb').innerHTML=`<div class="vf">${msg?`<div class="oc" style="background:#e6f4e7;margin:0">✓ تمت إضافة «${esc(msg)}» إلى المتجر. اضغط «حفظ ونشر التغييرات» ليظهر للزبائن.</div>`:''}<h4 style="margin:6px 0 0">إضافة منتج جديد</h4>${edImg('d')}${edFields('d')}<button class="btn" style="margin-top:12px" onclick="addNew()">إضافة المنتج إلى المتجر</button><button class="btn s" onclick="save()">حفظ ونشر التغييرات</button></div>`;
 }
 function addNew(){
   const p=D;ens(p);const ih=p.cat==='s'&&p.ih;
@@ -572,7 +572,7 @@ async function pickK(k,f){if(!f)return;G(k).img=await rsz(f);reForm(k)}
 async function pickM(k,fs){const p=G(k);ens(p);for(const f of fs)p.imgs.push(await rsz(f));reForm(k)}
 function admS(){
   const t=S.cfg.tiers;
-  $('tb').innerHTML=`<label>رقم واتساب لاستلام الطلبات (بدون +، مثال 2135XXXXXXXX)</label><input value="${esc(S.cfg.wa)}" onchange="S.cfg.wa=this.value.replace(/\\D/g,'')"><h4>أسعار التوصيل (مكتب / منزل)</h4>${[1,2,3].map(k=>`<div class="row"><span>${['','عادية','داخلية (ورقلة والمجاورة)','الجنوب البعيد'][k]}</span><span class="g2" style="width:210px"><input type="number" value="${t[k][0]}" onchange="S.cfg.tiers[${k}][0]=+this.value"><input type="number" value="${t[k][1]}" onchange="S.cfg.tiers[${k}][1]=+this.value"></span></div>`).join('')}<h4>منطقة كل ولاية</h4><div class="g2">${WN.map((w,i)=>`<div class="row"><span>${i+1} ${w}</span><select style="width:90px" onchange="S.wt[${i}]=+this.value">${[1,2,3].map(k=>`<option value="${k}" ${S.wt[i]===k?'selected':''}>${['','عادية','داخلية (ورقلة والمجاورة)','الجنوب البعيد'][k]}</option>`).join('')}</select></div>`).join('')}</div><h4>روابط التواصل الاجتماعي</h4>${SOC.map(([k,l])=>`<label>${l}</label><input dir="ltr" placeholder="https://..." value="${esc((S.cfg.soc||{})[k]||'')}" onchange="(S.cfg.soc=S.cfg.soc||{})['${k}']=this.value.trim()">`).join('')}<h4>الإعلانات وروابط المنتجات</h4><label>رابط المتجر (يُستعمل في روابط المنتجات)</label><input dir="ltr" value="${esc(S.cfg.url||'')}" onchange="S.cfg.url=this.value.trim().split('#')[0]"><label>Meta Pixel ID (أرقام فقط)</label><input dir="ltr" inputmode="numeric" value="${esc(S.cfg.fb||'')}" onchange="S.cfg.fb=this.value.replace(/[^0-9]/g,'')"><label>TikTok Pixel ID</label><input dir="ltr" value="${esc(S.cfg.tt||'')}" onchange="S.cfg.tt=this.value.replace(/[^A-Za-z0-9]/g,'')"><p class="note">البكسل يعمل فقط إذا رفعت ملف المتجر على استضافة خاصة (مثل Netlify)، ولا يعمل على رابط claude.ai.</p><h4>كلمة مرور لوحة التحكم</h4><label>كلمة مرور جديدة</label><input id="npw" type="password" autocomplete="new-password"><button class="btn s" style="margin-top:8px" onclick="chgPw()">تغيير كلمة المرور</button><button class="btn" style="margin-top:12px" onclick="save()">حفظ وتنزيل ملف المتجر</button>`;
+  $('tb').innerHTML=`<label>رقم واتساب لاستلام الطلبات (بدون +، مثال 2135XXXXXXXX)</label><input value="${esc(S.cfg.wa)}" onchange="S.cfg.wa=this.value.replace(/\\D/g,'')"><h4>أسعار التوصيل (مكتب / منزل)</h4>${[1,2,3].map(k=>`<div class="row"><span>${['','عادية','داخلية (ورقلة والمجاورة)','الجنوب البعيد'][k]}</span><span class="g2" style="width:210px"><input type="number" value="${t[k][0]}" onchange="S.cfg.tiers[${k}][0]=+this.value"><input type="number" value="${t[k][1]}" onchange="S.cfg.tiers[${k}][1]=+this.value"></span></div>`).join('')}<h4>منطقة كل ولاية</h4><div class="g2">${WN.map((w,i)=>`<div class="row"><span>${i+1} ${w}</span><select style="width:90px" onchange="S.wt[${i}]=+this.value">${[1,2,3].map(k=>`<option value="${k}" ${S.wt[i]===k?'selected':''}>${['','عادية','داخلية (ورقلة والمجاورة)','الجنوب البعيد'][k]}</option>`).join('')}</select></div>`).join('')}</div><h4>روابط التواصل الاجتماعي</h4>${SOC.map(([k,l])=>`<label>${l}</label><input dir="ltr" placeholder="https://..." value="${esc((S.cfg.soc||{})[k]||'')}" onchange="(S.cfg.soc=S.cfg.soc||{})['${k}']=this.value.trim()">`).join('')}<h4>الإعلانات وروابط المنتجات</h4><label>رابط المتجر (يُستعمل في روابط المنتجات)</label><input dir="ltr" value="${esc(S.cfg.url||'')}" onchange="S.cfg.url=this.value.trim().split('#')[0]"><label>Meta Pixel ID (أرقام فقط)</label><input dir="ltr" inputmode="numeric" value="${esc(S.cfg.fb||'')}" onchange="S.cfg.fb=this.value.replace(/[^0-9]/g,'')"><label>TikTok Pixel ID</label><input dir="ltr" value="${esc(S.cfg.tt||'')}" onchange="S.cfg.tt=this.value.replace(/[^A-Za-z0-9]/g,'')"><p class="note">البكسل يعمل فقط إذا رفعت ملف المتجر على استضافة خاصة (مثل Netlify)، ولا يعمل على رابط claude.ai.</p><h4>كلمة مرور لوحة التحكم</h4><label>كلمة مرور جديدة</label><input id="npw" type="password" autocomplete="new-password"><button class="btn s" style="margin-top:8px" onclick="chgPw()">تغيير كلمة المرور</button><button class="btn" style="margin-top:12px" onclick="save()">حفظ ونشر التغييرات</button><button class="btn s" style="margin:12px 8px 0" onclick="ghReset()">إعادة ضبط ربط GitHub</button>`;
 }
 async function admO(){
   const db=await getDB();
@@ -621,12 +621,44 @@ function buildDoc(){
   c.querySelector('#state').textContent=JSON.stringify(S).replace(/</g,'\\u003c');
   return '<!DOCTYPE html>\n'+c.outerHTML;
 }
+function b64(s){const u=new TextEncoder().encode(s);let b='';for(let i=0;i<u.length;i+=32768)b+=String.fromCharCode.apply(null,u.subarray(i,i+32768));return btoa(b)}
+const GHK='qf_gh';
+const ghCfg=()=>{try{return JSON.parse(localStorage.getItem(GHK)||'{}')}catch(e){return{}}};
+function ghReset(){try{localStorage.removeItem(GHK)}catch(e){}alert('تم مسح إعدادات GitHub من هذا المتصفح. عند الحفظ القادم سيُطلب منك إدخالها من جديد.')}
+async function ghSave(){
+  let c=ghCfg();
+  if(!c.repo||!c.token){
+    const repo=prompt('اسم المستودع على GitHub بالشكل: اسم-الحساب/اسم-المستودع');
+    if(!repo)return;
+    const token=prompt('الصق GitHub Token (صلاحية Contents: Read and write على هذا المستودع فقط)');
+    if(!token)return;
+    const path=prompt('مسار الملف داخل المستودع (غالباً index.html)','index.html');
+    if(!path)return;
+    c={repo:repo.trim(),token:token.trim(),path:path.trim().replace(/^\/+/,'')};
+    try{
+      const r=await fetch('https://api.github.com/repos/'+c.repo,{headers:{Authorization:'Bearer '+c.token,Accept:'application/vnd.github+json'}});
+      if(!r.ok)throw new Error('تعذر الوصول إلى المستودع ('+r.status+'). تأكد من الاسم والـ Token.');
+      c.branch=(await r.json()).default_branch;
+    }catch(e){alert(e.message);return}
+    try{localStorage.setItem(GHK,JSON.stringify(c))}catch(e){}
+  }
+  const H={Authorization:'Bearer '+c.token,Accept:'application/vnd.github+json'};
+  const dir=c.path.includes('/')?c.path.slice(0,c.path.lastIndexOf('/')):'';
+  const base='https://api.github.com/repos/'+c.repo+'/contents/';
+  try{
+    let sha;
+    const r=await fetch(base+dir+'?ref='+encodeURIComponent(c.branch),{headers:H});
+    if(r.ok){const f=(await r.json()).find(x=>x.path===c.path);if(f)sha=f.sha}
+    else if(r.status===401||r.status===403){throw new Error('الـ Token غير صالح أو لا يملك الصلاحية. اضغط «إعادة ضبط ربط GitHub» ثم أعد المحاولة.')}
+    const w=await fetch(base+c.path,{method:'PUT',headers:Object.assign({'Content-Type':'application/json'},H),body:JSON.stringify({message:'تحديث المتجر من لوحة التحكم',content:b64(buildDoc()),branch:c.branch,sha})});
+    if(!w.ok){const j=await w.json().catch(()=>({}));throw new Error('فشل الحفظ ('+w.status+'): '+(j.message||''))}
+    alert('تم الحفظ على GitHub. سيُحدّث Netlify الموقع تلقائياً خلال دقيقة تقريباً.');
+  }catch(e){alert(e.message||'تعذر الحفظ')}
+}
 async function save(){
   try{const a=window.claude?await claude.use('artifact'):null;if(a){await a.publish(buildDoc());return}}
   catch(e){if(e&&e.code!=='conflict')alert('تعذر الحفظ: '+(e.message||e.code));return}
-  const b=new Blob([buildDoc()],{type:'text/html'}),l=document.createElement('a');
-  l.href=URL.createObjectURL(b);l.download='index.html';document.body.appendChild(l);l.click();l.remove();
-  alert('تم تنزيل ملف المتجر الجديد index.html. ارفعه على Netlify (Deploys) ليظهر التحديث للزبائن.');
+  await ghSave();
 }
 render();
 /* ===== روابط المنتجات والبكسل ===== */
@@ -690,7 +722,7 @@ const _rn=render;render=function(){_rn();renderSl()};
 const SLK=[['','بدون رابط']].concat(CATS.map(([c,id,n])=>['#'+id,'قسم '+n]));
 function admL(){
   const L=S.slides=S.slides||[];
-  $('tb').innerHTML=`<div class="tabs"><button class="btn" onclick="newS()">+ شريحة</button><button class="btn s" onclick="save()">حفظ وتنزيل ملف المتجر</button></div><p class="note">شرائح العروض والمنتجات الجديدة تظهر أسفل الواجهة وتتحرك تلقائياً. الصورة الأفضل أفقية (مثلاً 1200×400).</p>`+L.map((x,i)=>`<div class="ap" style="grid-template-columns:1fr"><div class="g2"><input value="${esc(x.tag)}" onchange="S.slides[${i}].tag=this.value" placeholder="الشارة (عرض، جديد)"><input value="${esc(x.btn)}" onchange="S.slides[${i}].btn=this.value" placeholder="نص الزر"></div><input value="${esc(x.title)}" onchange="S.slides[${i}].title=this.value" placeholder="العنوان"><input value="${esc(x.text)}" onchange="S.slides[${i}].text=this.value" placeholder="النص"><select onchange="S.slides[${i}].link=this.value">${SLK.concat(S.products.map(p=>['#p='+p.id,'منتج: '+p.name])).map(([v,l])=>`<option value="${esc(v)}" ${x.link===v?'selected':''}>${esc(l)}</option>`).join('')}</select><div class="row"><label class="x" style="width:auto;padding:0 8px;margin:0;display:inline-flex;align-items:center">${x.img?'تغيير الصورة':'إضافة صورة'}<input type="file" accept="image/*" hidden onchange="pickS(${i},this.files[0])"></label><label style="margin:0"><input type="checkbox" style="width:auto" ${x.on!==false?'checked':''} onchange="S.slides[${i}].on=this.checked"> معروضة</label><span>${x.img?`<button onclick="delete S.slides[${i}].img;admL()">حذف الصورة</button> `:''}<button onclick="if(confirm('حذف الشريحة؟')){S.slides.splice(${i},1);admL()}">حذف</button></span></div></div>`).join('');
+  $('tb').innerHTML=`<div class="tabs"><button class="btn" onclick="newS()">+ شريحة</button><button class="btn s" onclick="save()">حفظ ونشر التغييرات</button></div><p class="note">شرائح العروض والمنتجات الجديدة تظهر أسفل الواجهة وتتحرك تلقائياً. الصورة الأفضل أفقية (مثلاً 1200×400).</p>`+L.map((x,i)=>`<div class="ap" style="grid-template-columns:1fr"><div class="g2"><input value="${esc(x.tag)}" onchange="S.slides[${i}].tag=this.value" placeholder="الشارة (عرض، جديد)"><input value="${esc(x.btn)}" onchange="S.slides[${i}].btn=this.value" placeholder="نص الزر"></div><input value="${esc(x.title)}" onchange="S.slides[${i}].title=this.value" placeholder="العنوان"><input value="${esc(x.text)}" onchange="S.slides[${i}].text=this.value" placeholder="النص"><select onchange="S.slides[${i}].link=this.value">${SLK.concat(S.products.map(p=>['#p='+p.id,'منتج: '+p.name])).map(([v,l])=>`<option value="${esc(v)}" ${x.link===v?'selected':''}>${esc(l)}</option>`).join('')}</select><div class="row"><label class="x" style="width:auto;padding:0 8px;margin:0;display:inline-flex;align-items:center">${x.img?'تغيير الصورة':'إضافة صورة'}<input type="file" accept="image/*" hidden onchange="pickS(${i},this.files[0])"></label><label style="margin:0"><input type="checkbox" style="width:auto" ${x.on!==false?'checked':''} onchange="S.slides[${i}].on=this.checked"> معروضة</label><span>${x.img?`<button onclick="delete S.slides[${i}].img;admL()">حذف الصورة</button> `:''}<button onclick="if(confirm('حذف الشريحة؟')){S.slides.splice(${i},1);admL()}">حذف</button></span></div></div>`).join('');
 }
 function newS(){S.slides.push({tag:'جديد',title:'عنوان العرض',text:'',btn:'تسوّق الآن',link:'#shirts',on:true});admL()}
 function pickS(i,f){if(!f)return;const r=new FileReader;r.onload=()=>{const im=new Image;im.onload=()=>{const c=document.createElement('canvas'),k=Math.min(1,1200/im.width);c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);S.slides[i].img=c.toDataURL('image/jpeg',.78);admL()};im.src=r.result};r.readAsDataURL(f)}
